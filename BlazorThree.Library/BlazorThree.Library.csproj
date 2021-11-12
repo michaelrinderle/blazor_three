@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="yarn install" WorkingDirectory="yarn" />
+        <Exec Command="yarn run webpack" WorkingDirectory="yarn" />
+    </Target>
+
+    <ItemGroup>
+        <TestPath Include="../BlazorThree/wwwroot/" />
+        <_JSItems Include="yarn/dist/BlazorThree.bundle.js" />
+    </ItemGroup>
+
+    <Target Name="CheckAndCopyTypescript" AfterTargets="Build">
+        <Message Text="Copying Typescript export to server project" Importance="high" />
+        <Copy OverwriteReadOnlyFiles="true" SourceFiles="@(_JSItems)" DestinationFolder="../BlazorThree/wwwroot/js/" />
+    </Target>
+
+</Project>
