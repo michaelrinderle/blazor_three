@@ -1,13 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Remove="wwwroot\js\BlazorThree.bundle.js" />
+    </ItemGroup>
 
+    <ItemGroup>
+        <None Include="wwwroot\js\BlazorThree.bundle.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\BlazorThree.Library\BlazorThree.Library.csproj" />
+    </ItemGroup>
+
+    <Target Name="TranscribeTypescipt" AfterTargets="Build">
+        <MSBuild Projects="..\BlazorThree.Library\BlazorThree.Library.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform)">
+        </MSBuild>
+    </Target>
 </Project>

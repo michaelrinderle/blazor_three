@@ -1,7 +1,46 @@
-﻿window.addEventListener("load", () => {
-    const header = document.createElement("h1");
-    header.innerText = "Webpack❤️TS"
+﻿import { AmbientLight, BoxGeometry, Color, DirectionalLight, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 
-    const body = document.querySelector("body");
-    body.appendChild(header);
-})
+
+namespace BlazorThree {
+    class BlazorThreeFunctions {
+        public initScene(): void {
+
+            const scene = new Scene();
+            const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+            const renderer = new WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const geometry = new BoxGeometry();
+            const material = new MeshBasicMaterial({ color: 0x00ff00 });
+            const cube = new Mesh(geometry, material);
+            scene.add(cube);
+
+            camera.position.z = 5;
+
+            const animate = function () {
+                requestAnimationFrame(animate);
+
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // init resize listener
+            //window.addEventListener("resize", () => {
+            //    // camera.aspect = container.offsetWidth / container.offsetHeight;
+            //    camera.updateProjectionMatrix();
+            //    renderer.setSize(container.offsetWidth, container.offsetHeight);
+            //}, false);
+        }
+    }
+    export function Load(): void {
+        window["bt"] = new BlazorThreeFunctions();
+    }
+}
+
+BlazorThree.Load();

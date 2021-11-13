@@ -1,5 +1,19 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime;
 
 <PageTitle>BlazorThree</PageTitle>
 
-<div class="blazor-three"></div>
+<!-- <div id="blazor-three"></div> -->
+
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+           await JSRuntime.InvokeVoidAsync("window.bt.initScene");
+        }
+    }
+
+}
